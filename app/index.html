@@ -42,7 +42,7 @@
 				</div>
 				<div id="viewPane">
 					<ul class="fruits">
-						<li class="fruit" ng-repeat="fruit in fruitstand.fruits | filter: filter.query | orderBy : 'name'" ng-click="selectFruit(fruit.id);" ng-class-odd="'odd'" ng-class-even="'even'">
+						<li class="fruit" ng-repeat="fruit in fruitstand.fruits | filter: filter.query | orderBy : 'name'" ng-click="selectFruit(fruit._id);" ng-class-odd="'odd'" ng-class-even="'even'">
 							<span class="name">{{ fruit.name | uppercase }}</span>
 							<span class="price">{{ "Php " + fruit.price }}</span>
 							<span class="quantity">{{ "x " + fruit.quantity }}</span>

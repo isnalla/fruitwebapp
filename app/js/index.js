@@ -7,8 +7,8 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 
 	var fruitFactory = {};
 
-	fruitFactory.getData = function() {
-		return dbHandler.getData();
+	fruitFactory.getData = function(callback) {
+		return dbHandler.getData(callback);
 	};
 
 	fruitFactory.updateData = function(id, data) {
@@ -30,7 +30,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 		openFruitstand: false,
 		selectedFruit: {
 			selected: false,
-			id: "",
+			_id: "",
 			index: -1
 		},
 		editing: {
@@ -42,7 +42,11 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 		addNewFruit: false
 	};
 
-	$scope.fruitstand.fruits = fruitFactory.getData();
+	$scope.fruitstand.fruits;
+	fruitFactory.getData(function(data){
+
+		$scope.fruitstand.fruits = data;
+	});
 
 	$scope.fruitstand.openningFruitstand = function() {
 		$scope.fruitstand.openPacket = false;
@@ -54,7 +58,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 			$scope.fruitstand.addNewFruit = false;
 			$scope.fruitstand.viewOther = "";
 		}
-		$scope.fruitstand.selectedFruit.id = id;
+		$scope.fruitstand.selectedFruit._id = id;
 		$scope.fruitstand.selectedFruit.index = $scope.findFruitIndex(id);
 		$scope.fruitstand.selectedFruit.selected = true;
 		$scope.fruitstand.viewOther = "viewInfo";
@@ -95,7 +99,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 		}
 
 		if((Object.keys(changes)).length != 0) {
-			fruitFactory.updateData($scope.fruitstand.selectedFruit.id, changes);
+			fruitFactory.updateData($scope.fruitstand.selectedFruit._id, changes);
 			var index = $scope.fruitstand.selectedFruit.index;
 			for (var key in changes) {
 				if(key == 'price') {
@@ -117,7 +121,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 
 	$scope.findFruitIndex = function(id) {
 		for(var i in $scope.fruitstand.fruits) {
-			if($scope.fruitstand.fruits[i].id == id) return i;
+			if($scope.fruitstand.fruits[i]._id == id) return i;
 		}
 		return -1;
 	}
@@ -129,7 +133,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 		var index = $scope.fruitstand.selectedFruit.index;
 		var removed = $scope.fruitstand.fruits.splice(index, 1);
 		
-		fruitFactory.deleteData($scope.fruitstand.selectedFruit.id);
+		fruitFactory.deleteData($scope.fruitstand.selectedFruit._id);
 	}
 
 	$scope.addNew = function() {
@@ -168,7 +172,7 @@ var app = angular.module('dbsoria', ['ngAnimate'])
 		};
 		fruitFactory.addData($scope.fruitstand.adding, function(newId) {
 			// $scope.fruitstand.fruits = fruitFactory.getData();
-			$scope.fruitstand.adding.id = newId;
+			$scope.fruitstand.adding._id = newId;
 			$scope.fruitstand.fruits.push($scope.fruitstand.adding);
 		});
 	}

@@ -17,242 +17,51 @@ DBHandler.prototype = {
 		}
 	},
 
-	getData: function() {
-		var fruits = [
-			{
-				id: 0,
-				name: "Apple",
-				distributor: "Distributor A",
-				quantity: 5,
-				price: "10.00",
-				dateAdded : "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 1,
-				name: "Banana",
-				distributor: "Distributor B",
-				quantity: 5,
-				price: "20.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 2,
-				name: "Mango",
-				distributor: "Distributor C",
-				quantity: 5,
-				price: "30.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 3,
-				name: "Watermelon",
-				distributor: "Distributor D",
-				quantity: 5,
-				price: "40.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 4,
-				name: "Pomelo",
-				distributor: "Distributor E",
-				quantity: 5,
-				price: "50.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 5,
-				name: "Apple",
-				distributor: "Distributor F",
-				quantity: 5,
-				price: "10.00",
-				dateAdded : "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 6,
-				name: "Banana",
-				distributor: "Distributor G",
-				quantity: 5,
-				price: "20.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 7,
-				name: "Mango",
-				distributor: "Distributor H",
-				quantity: 5,
-				price: "30.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 8,
-				name: "Watermelon",
-				distributor: "Distributor I",
-				quantity: 5,
-				price: "40.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			},
-			{
-				id: 9,
-				name: "Pomelo",
-				distributor: "Distributor J",
-				quantity: 5,
-				price: "50.00",
-				dateAdded: "04-28-2015",
-				priceHistory: [
-					{
-						amount: "10.00",
-						dateUpdated: "04-26-2015"
-					},
-					{
-						amount: "20.00",
-						dateUpdated: "04-27-2015"
-					},
-					{
-						amount: "30.00",
-						dateUpdated: "04-27-2015"
-					}
-				]
-			}
-		];
+	getData: function(callback) {
+		var data = {action: "get_fruits"};
+		$.post("../server/index.php", data, function(result){
+			var result = JSON.parse(result);
+			console.log(result);
 
-		return fruits;
+			callback(result);
+		});
 	},
 	updateData: function(id, data) {
 		console.log("Received update data");
 		console.log(id);
 		console.log(data);
+
+		id = id.$id;
+
+		var postData = {action: "edit_fruit", id: id, update: data};
+
+		$.post("../server/index.php", postData, function(result){
+			console.log(result);
+			$("#viewPane").html(result);
+		
+		});
 	},
 	deleteData: function(id) {
+		console.log(id);
+		id = id.$id;
+
+		var data = {action: 'delete_fruit', id: id};
+
+		$.post("../server/index.php", data, function(result){
+			console.log("deleted fruit:"+id);
+			$("#viewPane").html(result);
+		});
 
 	},
 	addData: function(data, callback) {
+		data.action = "add_fruit";
 		console.log(data);
-		callback(100);
+		//$("#viewPane").html(data);
+		
+		$.post("../server/index.php", data, function(id){
+			console.log("added fruit:"+id);
+			//$("#viewPane").html(result);
+			callback(id);
+		});
 	}
 }
